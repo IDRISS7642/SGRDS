@@ -9,7 +9,7 @@ SGRDS – Système de Gestion des Résultats et Données de Soutenance
 
 Le SGRDS (Système de Gestion des Résultats et Données de Soutenance) est une application informatique destinée à faciliter la gestion, le traitement, l'archivage et la consultation des données académiques et des informations relatives aux soutenances.
 
-Ce projet est réalisé dans le cadre des activités universitaires de l'Université Peleforo GON COULIBALY, UFR Mathématiques, Département MPC.
+Ce projet est réalisé dans le cadre des activités universitaires de l'Université Peleforo GON COULIBALY, UPR Mathématiques, Département MPC.
 
 2. Objectif général
 
