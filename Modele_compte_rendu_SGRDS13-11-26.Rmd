@@ -1,0 +1,154 @@
+---
+title: "COMPTE-RENDU DE RÉUNION"
+author: "Projet SGRDS"
+date: "13/11/2026"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: '2'
+  html_document:
+    toc: true
+    toc_depth: 2
+    theme: readable
+---
+
+# 1. INFORMATIONS GÉNÉRALES
+
+- *Projet :* Système de Gestion Des Résultats et Données Soutenances (SGRDS)
+- *Date :* Vendredi 13 novembre 2026
+- *Heure de début :* 22h30
+- *Heure de fin :* 23h30
+- *Lieu / Plateforme :* Réunion en ligne (Google Meet)
+- *Responsable de la réunion :* Ouattara Idrissa.
+- *Rédacteur du compte-rendu :* Silué Amidou 
+
+# 2. PARTICIPANTS
+
+| N° | Nom et prénom | Rôle | Présence |
+|---|---|---|---|
+| 1 | Dr Dalié | Superviseur du Projet | Présent |
+| 2 | Ouattara Idrissa |  Chef de projet | Présent |
+| 3 | Glan Zranseu Kouakou Néhémie | Base de données | Présent |
+| 4 | Bamba Mohamed Cheick | Développeur | Absent |
+| 5 | Silué Amidou | Documentation | Présent |
+| 6 | Ouattara Mamadou | Données | Présent |
+| 7 | Keita Sadio | Création shiny frontend | présent |
+# 3. ORDRE DU JOUR
+
+1. Évaluation de l'évolution du travail de chaque membre.
+2. Bilan des tâches réalisées durant l'étape 1.
+3. Présentation des difficultés rencontrées.
+4. Échanges sur les améliorations techniques du projet.
+5. Préparation de la présentation du projet au conseil scientifique.
+6. Perspectives et orientations pour l'étape 2.
+
+# 4. POINTS ABORDÉS
+
+## 4.1. Bilan de l'évolution du travail
+
+La rencontre a principalement porté sur l'examen de l'évolution des travaux réalisés par les différents membres de l'équipe.
+
+L'objectif était de faire le point sur les tâches attribuées à chacun, d'apprécier l'état d'avancement du projet et d'identifier les éventuels éléments restant à améliorer.
+
+Il a été constaté l'absence de Bamba Mohamed Cheick, qui n'a donc pas pu présenter personnellement l'état d'avancement de ses travaux.
+
+## 4.2. Observations techniques sur le projet
+
+Au cours des échanges, plusieurs propositions d'amélioration ont été évoquées par l'encadreur.
+
+### a) Ajout d'une fonctionnalité d'insertion de photos
+
+Le superviseur a souligné l'importance de prévoir une fonctionnalité permettant aux étudiants d'ajouter des photos lors de la saisie ou de la recherche des données.
+
+À cet effet, un onglet spécifique pourrait être intégré à l'interface de l'application afin de faciliter l'insertion et l'association des images aux données correspondantes.
+
+### b) Importation des fichiers Excel dans R
+
+Le superviseur a expliqué qu'il est possible d'importer directement des fichiers Excel dans un programme R à l'aide de commandes appropriées.
+
+Cette fonctionnalité permettra à l'équipe de préparer des données dans Excel, puis de les importer dans l'environnement R pour leur exploitation et leur traitement.
+
+Cette possibilité facilitera la gestion et le traitement des données du projet.
+
+## 4.3. Rencontre avec le conseil scientifique et présentation du projet
+
+Le Dr Dalié a annoncé qu'il aura une rencontre avec le conseil scientifique.
+
+À cette occasion, l'équipe devra essayer de présenter l'évolution du travail réalisé depuis le démarrage du projet, notamment les premières tâches entreprises et les progrès enregistrés.
+
+Chaque membre devra contribuer à la préparation de cette présentation en veillant à la bonne organisation des informations relatives à son travail.
+
+## 4.4. Renforcement de la collaboration entre les membres
+
+Les échanges ont également mis en évidence l'importance de renforcer les liens entre les membres de l'équipe.
+
+Chaque participant est invité à communiquer régulièrement avec les autres, à signaler ses difficultés et à contribuer activement à l'avancement collectif du projet.
+
+## 4.5. Préparation de l'étape 2
+
+Le superviseur a annoncé que les observations relatives au travail effectué durant l'étape 1 ainsi que les nouvelles orientations seront communiquées au plus tard dimanche 15 novembre 2026.
+
+Ces éléments permettront à l'équipe de prendre connaissance du bilan de l'étape 1 et de mieux préparer la suite du projet.
+
+# 5. DÉCISIONS ET RECOMMANDATIONS
+
+| N° | Décisions et recommandations | Responsable |
+|---|---|---|
+| 1 | Faire le bilan des tâches réalisées durant l'étape 1. | Tous les membres |
+| 2 | Préparer les éléments de présentation de l'évolution du projet au conseil scientifique. | Tous les membres |
+| 3 | Envisager l'intégration d'un onglet d'insertion de photos. | Équipe technique |
+| 4 | Étudier l'importation des fichiers Excel dans R. | Équipe technique |
+| 5 | Attendre les observations et les nouvelles orientations du superviseur. | Tous les membres |
+| 6 | Renforcer la communication et la collaboration au sein de l'équipe. | Tous les membres |
+
+# 6. ACTIONS À RÉALISER
+
+| Tâches | Responsable | Date limite | Statut |
+|---|---|---|---|
+| Faire le bilan des travaux de l'étape 1. | Tous les membres | À définir | En cours |
+| Préparer les éléments de présentation du projet. | Tous les membres | À définir | À faire |
+| Prendre connaissance des observations de l'encadreur. | Tous les membres | 15/11/2026 | En attente |
+| Étudier la fonctionnalité d'insertion des photos. | Équipe technique | À définir | À faire |
+| Étudier l'importation des fichiers Excel dans R. | Équipe technique | À définir | À faire |
+| Prendre connaissance des tâches de l'étape 2. | Tous les membres | Après transmission | En attente |
+
+# 7. DIFFICULTÉS ET OBSERVATIONS
+
+L'absence de Bamba Mohamed Cheick a empêché la présentation de l'état d'avancement de ses travaux au cours de cette rencontre.
+
+Le superviseur a rappelé que la communication constitue un élément essentiel du travail en équipe. Chaque membre doit informer le groupe en cas d'absence, de difficulté de connexion ou d'indisponibilité.
+
+Il a également insisté sur le fait que les études universitaires doivent rester la priorité des étudiants.
+
+En période de forte charge de travail, notamment lors des travaux dirigés et des examens,nous pouvons se concerter afin de demander un réaménagement des délais.
+
+Enfin, il a précisé que le projet est un travail collectif et bénévole. Il ne doit donc pas devenir une source de pression susceptible de compromettre les résultats universitaires des participants.
+
+# 8. PROCHAINE ÉTAPE ET PERSPECTIVES
+
+Les prochaines tâches dépendront des observations et des orientations que le superviseur transmettra concernant l'étape 1.
+
+L'équipe devra notamment :
+
+- Examiner les remarques formulées par l'encadreur.
+- Identifier les améliorations à apporter au travail déjà réalisé.
+- Préparer la présentation de l'évolution du projet.
+- Prendre connaissance des nouvelles tâches de l'étape 2.
+- Poursuivre le développement du SGRDS dans un esprit de collaboration.
+
+# 9. PROCHAINE RÉUNION
+
+- *Date prévue :* 20 / 11 / 2026.
+- *Heure :*23H30.
+- *Plateforme :* Google Meet.
+- *Points à traiter :* Bilan des observations du superviseur, répartition des tâches de l'étape 2 et suivi de l'avancement du projet.
+
+# 10. CLÔTURE DE LA RÉUNION
+
+La réunion a pris fin à 23h30 après les différentes interventions et recommandations du Dr Dalié.
+
+Le superviseur a remercié l'ensemble des participants et les a encouragés à poursuivre le travail dans un esprit de responsabilité, de compréhension et de collaboration, tout en accordant la priorité à nos études universitaires.
+
+- *Rédigé par :* Silué Amidou 
+- *Validé par :* Chef de projet
+
