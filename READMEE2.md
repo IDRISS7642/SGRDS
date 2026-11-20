@@ -1,0 +1,47 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# sgrds
+
+<!-- badges: start -->
+
+<!-- badges: end -->
+
+**SGRDS** (*Système de Gestion et de Reporting des Soutenances*) est un
+package R et une application Shiny destinés à centraliser et automatiser
+la gestion des impétrants (Master et Doctorat), des notes semestrielles,
+des soutenances, des jurys, des avis des rapporteurs et du suivi
+administratif du Conseil Scientifique.
+
+## Architecture de la base de données
+
+Le module base de données repose sur **SQLite** et comprend :
+
+- `data/schema.sql` : schéma relationnel complet (8 tables :
+  `utilisateurs`, `impetrants`, `notes`, `soutenances`, `jury`,
+  `avis_rapporteurs`, `journal`, `photos` et leurs index).
+- `data/sgrds.sqlite` : fichier de base de données SQLite initialisé.
+- `data/photos/` : répertoire de stockage des fichiers images associés
+  aux impétrants.
+- `docs/dictionnaire_donnees.md` : dictionnaire détaillé des tables,
+  colonnes et règles d’intégrité.
+- `R/fct_database.R` : fonctions de connexion, d’exécution de requêtes
+  et de lecture des tables (`connecter_bdd()`, `deconnecter_bdd()`,
+  `executer_requete()`, `lire_table()`).
+
+## Exemple d’utilisation (Accès à la base)
+
+``` r
+library(sgrds)
+
+# Connexion a la base de donnees SQLite
+con <- connecter_bdd("data/sgrds.sqlite")
+
+# Lecture de la table des impetrants
+impetrants <- lire_table(con, "impetrants")
+
+# Fermeture propre de la connexion
+deconnecter_bdd(con)
+```
