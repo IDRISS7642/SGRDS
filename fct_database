@@ -1,0 +1,6 @@
+usethis::use_data_raw()
+dir.create("inst")
+usethis::use_testthat()
+usethis::use_package("DBI")
+usethis::use_package("RSQLite")
+usethis::use_readme_rmd()
