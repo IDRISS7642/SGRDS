@@ -1,0 +1,14 @@
+Package: sgrds
+Title: Systeme de Gestion des Resultats de Soutenance
+Version: 0.0.0.9000
+Authors@R: 
+    person("GLAN Zranseu Kouakou", "Néhémie", , "glannehemie4@gmail.com", role = c("aut", "cre"))
+Description: Outil de gestion des resultats de soutenance (~700 etudiants et doctorants)
+    pour l'UFR des Sciences Biologiques.
+License: `MIT + file LICENSE
+Config/roxygen2/version: 8.1.1
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
