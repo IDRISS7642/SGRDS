@@ -1,0 +1,136 @@
+importer_excel <- function(fichier) {
+  
+  extension <- tolower(tools::file_ext(fichier))
+  
+  if (extension %in% c("xls", "xlsx")) {
+    
+    tableau <- readxl::read_excel(fichier)
+    
+    tableau_d <- as.data.frame(tableau)
+    
+    return(tableau_d)
+    
+  } else {
+    
+    stop("Le fichier doit être Excel.")
+    
+  }
+}
+
+valider_colonnes <- function(fiche, colonnes_requises) {
+  
+  tableau_d <- importer_excel(fiche)
+  
+  manquantes <- setdiff(
+    colonnes_requises,
+    names(tableau_d)
+  )
+  
+  if (length(manquantes) > 0) {
+    
+    stop(
+      paste(
+        "Colonnes manquantes :",
+        paste(manquantes, collapse = ", ")
+      )
+    )
+    
+  }
+  
+  return(TRUE)
+}
+
+
+#' Nettoyer et normaliser les données
+#'
+#' Supprime les espaces inutiles et uniformise
+#' les noms, prénoms, lieux de naissance,
+#' filières, genres et mentions.
+#'
+#' @param tableau_d Tableau contenant les données.
+#'
+#' @return Le tableau nettoyé.
+#' @export
+
+nettoyer_donnees <- function(tableau_d) {
+  
+  # 1. Nettoyage général des espaces
+  tableau_d[] <- lapply(tableau_d, function(colonne) {
+    
+    if (is.character(colonne)) {
+      
+      colonne <- trimws(colonne)
+      
+      colonne[colonne == ""] <- NA
+    }
+    
+    return(colonne)
+  })
+  
+  
+  # 2. Normalisation des noms de colonnes
+  names(tableau_d) <- tolower(trimws(names(tableau_d)))
+  
+  
+  # 3. Mise en forme des noms et prénoms
+  colonnes_identite <- c("nom", "prénom", "Niveau", "Filière", " Lieu de naissance", "Nationalité")
+  
+  for (col in colonnes_identite) {
+    
+    if (col %in% names(tableau_d)) {
+      
+      tableau_d[[col]] <- tools::toTitleCase(
+        tolower(tableau_d[[col]])
+      )
+    }
+  }
+  
+  
+  # 4. Normalisation du lieu de naissance
+  if ("lieu de naissance" %in% names(tableau_d)) {
+    
+    tableau_d[["lieu de naissance"]] <-
+      tools::toTitleCase(
+        tolower(tableau_d[["lieu de naissance"]])
+      )
+  }
+  
+  
+  # 5. Normalisation des filières
+  if ("filiere" %in% names(tableau_d)) {
+    
+    tableau_d$filiere <- tolower(tableau_d$filiere)
+  }
+  
+  
+  # 6. Normalisation du genre
+  if ("genre" %in% names(tableau_d)) {
+    
+    genre <- tolower(tableau_d$genre)
+    
+    genre[genre %in% c("m", "homme", "masculin")] <- "Masculin"
+    
+    genre[genre %in% c("f", "femme", "feminin")] <- "Feminin"
+    
+    tableau_d$genre <- genre
+  }
+  
+  
+  # 7. Normalisation des mentions
+  if ("mention" %in% names(tableau_d)) {
+    
+    mention <- tolower(tableau_d$mention)
+    
+    mention[mention == "passable"] <- "Passable"
+    mention[mention == "assez bien"] <- "Assez bien"
+    mention[mention == "bien"] <- "Bien"
+    mention[mention == "tres bien"] <- "Tres bien"
+    mention[mention == "excellent"] <- "Excellent"
+    
+    tableau_d$mention <- mention
+  }
+  
+  
+  # 8. Retourner le tableau nettoyé
+  return(tableau_d)
+}
