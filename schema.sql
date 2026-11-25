@@ -1,83 +1,99 @@
-#' Connecter a la base de donnees SQLite SGRDS
-#'
-#' @param db_path Chemin vers le fichier de base SQLite (par defaut "data/sgrds.sqlite").
-#' @return Un objet de connexion DBI actif avec les cles etrangeres activees.
-#' @export
-connecter_bdd <- function(db_path = "data/sgrds.sqlite") {
-  if (!requireNamespace("DBI", quietly = TRUE) || !requireNamespace("RSQLite", quietly = TRUE)) {
-    stop("Les packages 'DBI' et 'RSQLite' doivent etre installes.")
-  }
+-- SGRDS — Schéma de la base de données
+-- Basé sur les différentes consignes reçues jusqu'ici
+-- ============================================================
 
-  dir.create(dirname(db_path), showWarnings = FALSE, recursive = TRUE)
-  con <- DBI::dbConnect(RSQLite::SQLite(), dbname = db_path)
-  DBI::dbExecute(con, "PRAGMA foreign_keys = ON;")
-  return(con)
-}
+-- 1. Table des utilisateurs (Conseil Scientifique)
+CREATE TABLE IF NOT EXISTS utilisateurs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nom TEXT NOT NULL,
+    prenom TEXT NOT NULL,
+    email TEXT UNIQUE,
+    role TEXT CHECK(role IN ('admin', 'membre')) NOT NULL,
+    mot_de_passe_hash TEXT NOT NULL,
+    date_creation DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 
-#' Deconnecter proprement de la base de donnees
-#'
-#' @param con Objet de connexion DBI retourne par connecter_bdd().
-#' @return Invisible TRUE si la deconnexion s'est bien deroulee.
-#' @export
-deconnecter_bdd <- function(con) {
-  if (missing(con) || is.null(con)) {
-    stop("Veuillez fournir une connexion valide 'con'.")
-  }
-  if (!DBI::dbIsValid(con)) {
-    warning("La connexion est deja fermee ou invalide.")
-    return(invisible(FALSE))
-  }
-  DBI::dbDisconnect(con)
-  return(invisible(TRUE))
-}
+-- 2. Table des impétrants (étudiants et doctorants)
+CREATE TABLE IF NOT EXISTS impetrants (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    matricule TEXT UNIQUE NOT NULL,
+    nom TEXT NOT NULL,
+    prenom TEXT NOT NULL,
+    date_naissance DATE,
+    contact TEXT,
+    genre TEXT CHECK(genre IN ('M', 'F')),
+    filiere TEXT NOT NULL,
+    niveau TEXT CHECK(niveau IN ('Master', 'Doctorat')) NOT NULL,
+    annee_inscription INTEGER NOT NULL,
+    date_creation DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 
-#' Executer une requete SQL (DDL, INSERT, UPDATE, DELETE)
-#'
-#' @param con Objet de connexion DBI actif.
-#' @param query Chaine de caracteres contenant la requete SQL a executer.
-#' @return Le nombre de lignes affectees (retourne par DBI::dbExecute).
-#' @export
-executer_requete <- function(con, query) {
-  if (missing(con) || is.null(con) || !DBI::dbIsValid(con)) {
-    stop("Connexion invalide ou fermee. Appelez connecter_bdd() d'abord.")
-  }
-  if (!is.character(query) || length(query) != 1 || nchar(trimws(query)) == 0) {
-    stop("La requete 'query' doit etre une chaine de caracteres non vide.")
-  }
-  DBI::dbExecute(con, query)
-}
+-- 3. Table des notes semestrielles
+CREATE TABLE IF NOT EXISTS notes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    impetrant_id INTEGER NOT NULL REFERENCES impetrants(id),
+    semestre TEXT CHECK(semestre IN ('M1S1','M1S2','M2S1','M2S2')) NOT NULL,
+    ue TEXT NOT NULL,
+    note REAL CHECK(note >= 0 AND note <= 20),
+    credits INTEGER,
+    coefficient REAL,
+    date_saisie DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 
-#' Lire l'integralite d'une table sous forme de data.frame
-#'
-#' @param con Objet de connexion DBI actif.
-#' @param nom_table Nom de la table SQLite a lire.
-#' @return Un data.frame contenant les enregistrements de la table.
-#' @export
-lire_table <- function(con, nom_table) {
-  if (missing(con) || is.null(con) || !DBI::dbIsValid(con)) {
-    stop("Connexion invalide ou fermee. Appelez connecter_bdd() d'abord.")
-  }
-  if (!is.character(nom_table) || length(nom_table) != 1 || nchar(trimws(nom_table)) == 0) {
-    stop("Le parametre 'nom_table' doit etre une chaine de caracteres non vide.")
-  }
-  tables_existantes <- DBI::dbListTables(con)
-  if (!nom_table %in% tables_existantes) {
-    stop("La table '", nom_table, "' n'existe pas dans la base.")
-  }
-  requete <- paste0("SELECT * FROM ", DBI::dbQuoteIdentifier(con, nom_table), ";")
-  DBI::dbGetQuery(con, requete)
+-- 4. Table des soutenances
+CREATE TABLE IF NOT EXISTS soutenances (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    impetrant_id INTEGER NOT NULL REFERENCES impetrants(id),
+    date_soutenance DATE,
+    numero_ordre TEXT UNIQUE,
+    note_finale REAL CHECK(note_finale >= 0 AND note_finale <= 20),
+    mention TEXT,
+    deliberation TEXT,
+    decision_finale TEXT,
+    date_enregistrement DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 
-  initialiser_base_sgrds <- function(db_path = "data/sgrds.sqlite", schema_path = "data/schema.sql") {
-    con <- connecter_bdd(db_path = db_path)
-    sql_texte <- paste(readLines(schema_path, warn = FALSE), collapse = "\n")
-    requetes <- unlist(strsplit(sql_texte, ";"))
-    for (req in requetes) {
-      req_propre <- trimws(req)
-      if (nchar(req_propre) > 0) {
-        executer_requete(con, paste0(req_propre, ";"))
-      }
-    }
-    message("Base de donnees SGRDS initialisee avec succes.")
-    return(con)
-  }
-}
+-- 5. Table du jury
+CREATE TABLE IF NOT EXISTS jury (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    soutenance_id INTEGER NOT NULL REFERENCES soutenances(id),
+    nom_membre TEXT NOT NULL,
+    qualite TEXT,
+    affiliation TEXT,
+    role_jury TEXT CHECK(role_jury IN ('président','rapporteur','examinateur','directeur'))
+);
+
+-- 6. Table des avis rapporteurs
+CREATE TABLE IF NOT EXISTS avis_rapporteurs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    soutenance_id INTEGER NOT NULL REFERENCES soutenances(id),
+    rapporteur TEXT NOT NULL,
+    avis TEXT,
+    date_avis DATE
+);
+
+-- 7. Table de journalisation (traçabilité)
+CREATE TABLE IF NOT EXISTS journal (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    utilisateur_id INTEGER REFERENCES utilisateurs(id),
+    action TEXT NOT NULL,
+    table_cible TEXT,
+    enregistrement_id INTEGER,
+    details TEXT,
+    date_action DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 8. Table des photos
+CREATE TABLE IF NOT EXISTS photos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    impetrant_id INTEGER NOT NULL REFERENCES impetrants(id),
+    chemin_fichier TEXT NOT NULL,
+    description TEXT,
+    date_ajout DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Index pour accélérer les requêtes
+CREATE INDEX IF NOT EXISTS idx_notes_impetrant ON notes(impetrant_id);
+CREATE INDEX IF NOT EXISTS idx_soutenances_impetrant ON soutenances(impetrant_id);
+CREATE INDEX IF NOT EXISTS idx_journal_utilisateur ON journal(utilisateur_id);
+CREATE INDEX IF NOT EXISTS idx_photos_impetrant ON photos(impetrant_id);
